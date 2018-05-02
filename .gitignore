@@ -1,0 +1,8 @@
+# Do not track secrets
+nubis/builder/artifacts/*-dev*
+nubis/builder/artifacts/*-dev/
+nubis/builder/artifacts/AMIs.json
+
+nubis/terraform/terraform.tfstate*
+nubis/terraform/.terraform
+nubis/terraform/terraform.tfvars
