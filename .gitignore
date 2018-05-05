@@ -8,3 +8,4 @@ nubis/terraform/.terraform
 nubis/terraform/terraform.tfvars
 
 nubis/id_rsa.pub
+nubis/aws

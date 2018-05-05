@@ -6,6 +6,16 @@ variable "arena" {
   default = "core"
 }
 
+variable "purpose" {
+  type = "string"
+  default = "kubernetes"
+}
+
+variable "nubis_domain" {
+  type = "string"
+  default = "nubis.allizom.org"
+}
+
 variable "environment" {
   default = "stage"
 }
@@ -29,3 +39,9 @@ variable "nubis_sudo_groups" {
 variable "nubis_user_groups" {
   default = ""
 }
+
+variable "consul_acl_token" {
+  type = "string"
+  default = "anonymous"
+}
+
