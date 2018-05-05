@@ -7,12 +7,12 @@ variable "arena" {
 }
 
 variable "purpose" {
-  type = "string"
+  type    = "string"
   default = "kubernetes"
 }
 
 variable "nubis_domain" {
-  type = "string"
+  type    = "string"
   default = "nubis.allizom.org"
 }
 
@@ -41,7 +41,6 @@ variable "nubis_user_groups" {
 }
 
 variable "consul_acl_token" {
-  type = "string"
+  type    = "string"
   default = "anonymous"
 }
-
