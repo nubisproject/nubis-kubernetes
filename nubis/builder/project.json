@@ -1,7 +1,8 @@
 {
   "variables": {
     "builders": [
-      "amazon-ebs-ubuntu"
+      "amazon-ebs-ubuntu",
+      "amazon-ebs-centos"
     ],
     "deregister": "true",
     "project_description": "Kubernetes image for runing in Nubis",
