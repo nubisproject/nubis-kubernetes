@@ -30,8 +30,43 @@ module "kops_bucket" {
   role         = ""
 }
 
+data "template_file" "nubis_metadata" {
+  #count    = "${var.enabled}"
+  template = "${file("${path.module}/templates/userdata.tpl")}"
+
+  vars {
+    NUBIS_PROJECT       = "${var.service_name}"
+    CONSUL_ACL_TOKEN    = "${var.consul_acl_token}"
+    NUBIS_PURPOSE       = "${var.purpose}"
+    NUBIS_ENVIRONMENT   = "${var.environment}"
+    NUBIS_ARENA         = "${var.arena}"
+    NUBIS_DOMAIN        = "${var.nubis_domain}"
+    NUBIS_ACCOUNT       = "${var.account}"
+    NUBIS_STACK         = "${var.service_name}-${var.environment}"
+    NUBIS_SUDO_GROUPS   = "${var.nubis_sudo_groups}"
+    NUBIS_USER_GROUPS   = "${var.nubis_user_groups}"
+    NUBIS_SWAP_SIZE_MEG = 0
+  }
+}
+
+data "template_file" "user_data_cloudconfig" {
+  #count    = "${var.enabled}"
+  template = "${file("${path.module}/templates/userdata_cloudconfig.tpl")}"
+
+  vars {
+    NAME    = "nubis-metadata"
+    PAYLOAD = "${base64encode(data.template_file.nubis_metadata.rendered)}"
+
+    # The nubis-metadata script looks here for it
+    LOCATION = "/var/cache/nubis/userdata"
+  }
+}
+
 module "kops_cluster" {
-  source  = "github.com/wanderaorg/karch/aws/cluster"
+  #source  = "github.com/wanderaorg/karch/aws/cluster"
+  #source  = "../aws/cluster"
+  source = "github.com/tinnightcap/karch//aws/cluster?ref=nubis-compat"
+
   version = "1.7.1"
 
   aws-region = "${var.region}"
@@ -57,12 +92,21 @@ module "kops_cluster" {
   kops-state-bucket = "${module.kops_bucket.name}"
 
   # Master
-  master-availability-zones = "${split(",",module.info.availability_zones)}"
-  master-image              = "${var.ami}"
+  master-availability-zones    = "${split(",",module.info.availability_zones)}"
+  master-image                 = "${var.ami}"
+  master-additional-sgs        = "${split(",",module.info.instance_security_groups)}"
+  master-additional-sgs-count  = "${length(split(",",module.info.instance_security_groups))}"
+  master-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # Bastion
-  bastion-image = "${var.ami}"
+  bastion-image                 = "${var.ami}"
+  bastion-additional-sgs        = "${split(",",module.info.instance_security_groups)}"
+  bastion-additional-sgs-count  = "${length(split(",",module.info.instance_security_groups))}"
+  bastion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # First minion instance group
-  minion-image = "${var.ami}"
+  minion-image                 = "${var.ami}"
+  minion-additional-sgs        = "${split(",",module.info.instance_security_groups)}"
+  minion-additional-sgs-count  = "${length(split(",",module.info.instance_security_groups))}"
+  minion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 }
