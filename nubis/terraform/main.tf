@@ -67,7 +67,7 @@ module "kops_cluster" {
   #source  = "../aws/cluster"
   source = "github.com/tinnightcap/karch//aws/cluster?ref=nubis-compat"
 
-  version = "1.7.1"
+  kubernetes-version = "v1.9.7"
 
   aws-region = "${var.region}"
 

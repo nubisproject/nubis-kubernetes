@@ -1,0 +1,58 @@
+#!/bin/bash
+
+USERDATA_FILE=/var/cache/nubis/userdata
+METADATA_URL_PREFIX=http://169.254.169.254/latest
+
+if [ ! -d "$(dirname $USERDATA_FILE)" ]; then
+  mkdir "$(dirname $USERDATA_FILE)"
+fi
+
+fetch_metadata() {
+
+# cloud-init is present, abort and rely on it having populated $USERDATA_FILE
+if curl --retry 5 -fqs $METADATA_URL_PREFIX/user-data | grep -qs '^#cloud-config'; then
+  return 0
+fi
+
+# If we can't read the file, use our own copy
+if [ -e "$USERDATA_FILE" ] && [ ! -r "$USERDATA_FILE" ] && [ "$(id -u)" != "0" ]; then
+  USERDATA_FILE=~/.nubis-metadata
+fi
+
+# the -z flag lets us do a conditionnal get if-modified-since
+curl --retry 5 -fqs -z $USERDATA_FILE -o $USERDATA_FILE $METADATA_URL_PREFIX/user-data
+
+CURL_RV=$?
+
+# If we can't write to the userdata file and we aren't root
+# use a possibly outdated one or retry using a cache in our
+# own home
+# CURLE_WRITE_ERROR (23)
+if [ "$CURL_RV" == "23" ] && [ "$(id -u)" != "0" ]; then
+  # Use the possibly outdated userdata file if we can read it
+  if [ -r "$USERDATA_FILE" ]; then
+    CURL_RV=0
+  else
+    USERDATA_FILE=~/.nubis-metadata
+    curl --retry 5 -fqs -z $USERDATA_FILE -o $USERDATA_FILE $METADATA_URL_PREFIX/user-data
+    CURL_RV=$?
+  fi
+fi
+
+if [ "$CURL_RV" != "0" ]; then
+  echo "ERROR: curl failed! ($CURL_RV)"
+  exit $CURL_RV
+fi
+
+}
+
+fetch_metadata
+
+if [ "$1" ]; then
+  # shellcheck disable=SC1090
+  source $USERDATA_FILE 2>/dev/null
+  eval VALUE="\$$1"
+  echo "$VALUE"
+else
+  cat $USERDATA_FILE
+fi
