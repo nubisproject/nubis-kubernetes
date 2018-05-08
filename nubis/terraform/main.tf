@@ -103,6 +103,7 @@ module "kops_cluster" {
   master-additional-sgs       = "${local.security_groups}"
   master-additional-sgs-count = "${local.security_groups_count}"
   master-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  master-update-interval      = 5
 
   # Bastion
   bastion-image                = "${var.ami}"
@@ -115,6 +116,7 @@ module "kops_cluster" {
   minion-additional-sgs       = "${local.security_groups}"
   minion-additional-sgs-count = "${local.security_groups_count}"
   minion-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  minion-update-interval      = 4
   min-minions                 = 2
 }
 
