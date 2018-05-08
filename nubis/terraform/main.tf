@@ -98,24 +98,24 @@ module "kops_cluster" {
   kops-state-bucket = "${module.kops_bucket.name}"
 
   # Master
-  master-availability-zones    = "${split(",",module.info.availability_zones)}"
-  master-image                 = "${var.ami}"
-  master-additional-sgs        = "${local.security_groups}"
-  master-additional-sgs-count  = "${local.security_groups_count}"
-  master-additional-user-data  = "${data.template_file.user_data_cloudconfig.rendered}"
+  master-availability-zones   = "${split(",",module.info.availability_zones)}"
+  master-image                = "${var.ami}"
+  master-additional-sgs       = "${local.security_groups}"
+  master-additional-sgs-count = "${local.security_groups_count}"
+  master-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # Bastion
-  bastion-image                 = "${var.ami}"
-  bastion-additional-sgs        = "${local.security_groups}"
-  bastion-additional-sgs-count  = "${local.security_groups_count}"
-  bastion-additional-user-data  = "${data.template_file.user_data_cloudconfig.rendered}"
+  bastion-image                = "${var.ami}"
+  bastion-additional-sgs       = "${local.security_groups}"
+  bastion-additional-sgs-count = "${local.security_groups_count}"
+  bastion-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # First minion instance group
-  minion-image                 = "${var.ami}"
-  minion-additional-sgs        = "${local.security_groups}"
-  minion-additional-sgs-count  = "${local.security_groups_count}"
-  minion-additional-user-data  = "${data.template_file.user_data_cloudconfig.rendered}"
-  min-minions                  = 2
+  minion-image                = "${var.ami}"
+  minion-additional-sgs       = "${local.security_groups}"
+  minion-additional-sgs-count = "${local.security_groups_count}"
+  minion-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  min-minions                 = 2
 }
 
 resource "aws_security_group" "kubernetes" {
