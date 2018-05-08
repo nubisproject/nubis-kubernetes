@@ -63,7 +63,7 @@ data "template_file" "user_data_cloudconfig" {
 }
 
 locals {
-  security_groups = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
+  security_groups       = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
   security_groups_count = "${1+length(split(",",module.info.instance_security_groups))}"
 }
 
@@ -115,7 +115,7 @@ module "kops_cluster" {
   minion-additional-sgs        = "${local.security_groups}"
   minion-additional-sgs-count  = "${local.security_groups_count}"
   minion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
-  min-minions                  = 2 
+  min-minions                  = 2
 }
 
 resource "aws_security_group" "kubernetes" {
