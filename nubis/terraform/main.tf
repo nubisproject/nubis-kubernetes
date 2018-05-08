@@ -63,7 +63,8 @@ data "template_file" "user_data_cloudconfig" {
 }
 
 locals {
-  security_groups = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
+  security_groups       = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
+  security_groups_count = "${1+length(split(",",module.info.instance_security_groups))}"
 }
 
 module "kops_cluster" {
@@ -76,6 +77,7 @@ module "kops_cluster" {
   aws-region = "${var.region}"
 
   # Networking & connectivity
+  container-networking      = "weave"
   vpc-id                    = "${module.info.vpc_id}"
   availability-zones        = "${split(",",module.info.availability_zones)}"
   vpc-private-subnet-ids    = "${split(",",module.info.private_subnets)}"
@@ -99,20 +101,21 @@ module "kops_cluster" {
   master-availability-zones    = "${split(",",module.info.availability_zones)}"
   master-image                 = "${var.ami}"
   master-additional-sgs        = "${local.security_groups}"
-  master-additional-sgs-count  = "${length(local.security_groups)}"
+  master-additional-sgs-count  = "${local.security_groups_count}"
   master-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # Bastion
   bastion-image                 = "${var.ami}"
   bastion-additional-sgs        = "${local.security_groups}"
-  bastion-additional-sgs-count  = "${length(local.security_groups)}"
+  bastion-additional-sgs-count  = "${local.security_groups_count}"
   bastion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # First minion instance group
   minion-image                 = "${var.ami}"
   minion-additional-sgs        = "${local.security_groups}"
-  minion-additional-sgs-count  = "${length(local.security_groups)}"
+  minion-additional-sgs-count  = "${local.security_groups_count}"
   minion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  min-minions                  = 2
 }
 
 resource "aws_security_group" "kubernetes" {
