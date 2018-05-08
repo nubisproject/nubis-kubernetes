@@ -76,6 +76,7 @@ module "kops_cluster" {
   aws-region = "${var.region}"
 
   # Networking & connectivity
+  container-networking      = "weave"
   vpc-id                    = "${module.info.vpc_id}"
   availability-zones        = "${split(",",module.info.availability_zones)}"
   vpc-private-subnet-ids    = "${split(",",module.info.private_subnets)}"
@@ -99,20 +100,21 @@ module "kops_cluster" {
   master-availability-zones    = "${split(",",module.info.availability_zones)}"
   master-image                 = "${var.ami}"
   master-additional-sgs        = "${local.security_groups}"
-  master-additional-sgs-count  = "${length(local.security_groups)}"
+  master-additional-sgs-count  = "4"
   master-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # Bastion
   bastion-image                 = "${var.ami}"
   bastion-additional-sgs        = "${local.security_groups}"
-  bastion-additional-sgs-count  = "${length(local.security_groups)}"
+  bastion-additional-sgs-count  = "4"
   bastion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # First minion instance group
   minion-image                 = "${var.ami}"
   minion-additional-sgs        = "${local.security_groups}"
-  minion-additional-sgs-count  = "${length(local.security_groups)}"
+  minion-additional-sgs-count  = "4"
   minion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  min-minions                  = 2 
 }
 
 resource "aws_security_group" "kubernetes" {
