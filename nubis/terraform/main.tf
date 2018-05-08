@@ -62,6 +62,10 @@ data "template_file" "user_data_cloudconfig" {
   }
 }
 
+locals {
+  security_groups = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
+}
+
 module "kops_cluster" {
   #source  = "github.com/wanderaorg/karch/aws/cluster"
   #source  = "../aws/cluster"
@@ -94,19 +98,49 @@ module "kops_cluster" {
   # Master
   master-availability-zones    = "${split(",",module.info.availability_zones)}"
   master-image                 = "${var.ami}"
-  master-additional-sgs        = "${split(",",module.info.instance_security_groups)}"
-  master-additional-sgs-count  = "${length(split(",",module.info.instance_security_groups))}"
+  master-additional-sgs        = "${local.security_groups}"
+  master-additional-sgs-count  = "${length(local.security_groups)}"
   master-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # Bastion
   bastion-image                 = "${var.ami}"
-  bastion-additional-sgs        = "${split(",",module.info.instance_security_groups)}"
-  bastion-additional-sgs-count  = "${length(split(",",module.info.instance_security_groups))}"
+  bastion-additional-sgs        = "${local.security_groups}"
+  bastion-additional-sgs-count  = "${length(local.security_groups)}"
   bastion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # First minion instance group
   minion-image                 = "${var.ami}"
-  minion-additional-sgs        = "${split(",",module.info.instance_security_groups)}"
-  minion-additional-sgs-count  = "${length(split(",",module.info.instance_security_groups))}"
+  minion-additional-sgs        = "${local.security_groups}"
+  minion-additional-sgs-count  = "${length(local.security_groups)}"
   minion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+}
+
+resource "aws_security_group" "kubernetes" {
+  name_prefix = "${var.service_name}-${var.arena}-${var.environment}-ssh-"
+
+  vpc_id = "${module.info.vpc_id}"
+
+  tags = {
+    Name        = "${var.service_name}-${var.arena}-${var.environment}-ssh"
+    Arena       = "${var.arena}"
+    Region      = "${var.region}"
+    Environment = "${var.environment}"
+  }
+
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+
+    security_groups = [
+      "${module.info.ssh_security_group}",
+    ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
