@@ -64,6 +64,7 @@ data "template_file" "user_data_cloudconfig" {
 
 locals {
   security_groups = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
+  security_groups_count = "${1+length(split(",",module.info.instance_security_groups))}"
 }
 
 module "kops_cluster" {
@@ -100,19 +101,19 @@ module "kops_cluster" {
   master-availability-zones    = "${split(",",module.info.availability_zones)}"
   master-image                 = "${var.ami}"
   master-additional-sgs        = "${local.security_groups}"
-  master-additional-sgs-count  = "4"
+  master-additional-sgs-count  = "${local.security_groups_count}"
   master-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # Bastion
   bastion-image                 = "${var.ami}"
   bastion-additional-sgs        = "${local.security_groups}"
-  bastion-additional-sgs-count  = "4"
+  bastion-additional-sgs-count  = "${local.security_groups_count}"
   bastion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
 
   # First minion instance group
   minion-image                 = "${var.ami}"
   minion-additional-sgs        = "${local.security_groups}"
-  minion-additional-sgs-count  = "4"
+  minion-additional-sgs-count  = "${local.security_groups_count}"
   minion-addidtional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
   min-minions                  = 2 
 }
