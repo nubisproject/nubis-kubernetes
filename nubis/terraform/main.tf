@@ -30,38 +30,6 @@ module "kops_bucket" {
   role         = ""
 }
 
-data "template_file" "nubis_metadata" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata.tpl")}"
-
-  vars {
-    NUBIS_PROJECT       = "${var.service_name}"
-    CONSUL_ACL_TOKEN    = "${var.consul_acl_token}"
-    NUBIS_PURPOSE       = "${var.purpose}"
-    NUBIS_ENVIRONMENT   = "${var.environment}"
-    NUBIS_ARENA         = "${var.arena}"
-    NUBIS_DOMAIN        = "${var.nubis_domain}"
-    NUBIS_ACCOUNT       = "${var.account}"
-    NUBIS_STACK         = "${var.service_name}-${var.environment}"
-    NUBIS_SUDO_GROUPS   = "${var.nubis_sudo_groups}"
-    NUBIS_USER_GROUPS   = "${var.nubis_user_groups}"
-    NUBIS_SWAP_SIZE_MEG = 0
-  }
-}
-
-data "template_file" "user_data_cloudconfig" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata_cloudconfig.tpl")}"
-
-  vars {
-    NAME    = "nubis-metadata"
-    PAYLOAD = "${base64encode(data.template_file.nubis_metadata.rendered)}"
-
-    # The nubis-metadata script looks here for it
-    LOCATION = "/var/cache/nubis/userdata"
-  }
-}
-
 locals {
   security_groups       = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
   security_groups_count = "${1+length(split(",",module.info.instance_security_groups))}"
@@ -102,19 +70,19 @@ module "kops_cluster" {
   master-image                = "${var.ami}"
   master-additional-sgs       = "${local.security_groups}"
   master-additional-sgs-count = "${local.security_groups_count}"
-  master-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  master-additional-user-data = "${data.template_file.user_data_cloudconfig_master.rendered}"
 
   # Bastion
   bastion-image                = "${var.ami}"
   bastion-additional-sgs       = "${local.security_groups}"
   bastion-additional-sgs-count = "${local.security_groups_count}"
-  bastion-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  bastion-additional-user-data = "${data.template_file.user_data_cloudconfig_bastion.rendered}"
 
   # First minion instance group
   minion-image                = "${var.ami}"
   minion-additional-sgs       = "${local.security_groups}"
   minion-additional-sgs-count = "${local.security_groups_count}"
-  minion-additional-user-data = "${data.template_file.user_data_cloudconfig.rendered}"
+  minion-additional-user-data = "${data.template_file.user_data_cloudconfig_node.rendered}"
   min-minions                 = 2
 }
 
