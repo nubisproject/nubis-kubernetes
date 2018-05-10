@@ -93,4 +93,3 @@ data "template_file" "user_data_cloudconfig_bastion" {
     LOCATION = "/var/cache/nubis/userdata"
   }
 }
-
