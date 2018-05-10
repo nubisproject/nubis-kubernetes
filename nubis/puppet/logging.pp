@@ -1,7 +1,17 @@
-fluentd::install_plugin { 'kubernetes_metadata_input':
+include ::fluentd
+
+# Ugh
+if $::osfamily == 'redhat' {
+  package { 'gcc-c++':
+    ensure => installed,
+    before =>  Fluentd::Install_plugin['kubernetes_metadata_filter'],
+  }
+}
+
+fluentd::install_plugin { 'kubernetes_metadata_filter':
   ensure      => '2.0.0',
   plugin_type => 'gem',
-  plugin_name => 'fluent-plugin-kubernetes_metadata_input',
+  plugin_name => 'fluent-plugin-kubernetes_metadata_filter',
 }
 
 file { '/etc/td-agent/config.d/kubernetes.conf':
@@ -9,6 +19,6 @@ file { '/etc/td-agent/config.d/kubernetes.conf':
   owner  => 'td-agent',
   group  => 'td-agent',
   mode   => '0644',
-  source =>  'puppet:///nubis/kubernetes-fluent.conf',
+  source =>  'puppet:///nubis/files/kubernetes-fluent.conf',
 }
 
