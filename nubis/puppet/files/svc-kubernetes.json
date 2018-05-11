@@ -1,14 +1,16 @@
 {
-  "service": "kubernetes",
-  "tags": [
-    "kubernetes",
-    "%%PURPOSE%%"
-  ],
-  "port": "10255",
-  "check": {
-    "name": "kubelet check",
-    "notes": "Check kubelet health endpoint, kubelets are the most basic componenet and will be on every node in the cluster",
-    "http": "http://localhost:10255/healthz",
-    "interval": "60s"
+  "service": {
+    "name": "kubernetes",
+    "tags": [
+      "kubernetes",
+      "%%PURPOSE%%"
+    ],
+    "port": 10255,
+    "check": {
+      "name": "kubelet check",
+      "notes": "Check kubelet health endpoint, kubelets are the most basic componenet and will be on every node in the cluster",
+      "http": "http://localhost:10255/healthz",
+      "interval": "60s"
+    }
   }
 }
