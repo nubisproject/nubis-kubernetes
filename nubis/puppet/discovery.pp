@@ -1,7 +1,10 @@
 include nubis_discovery
 
-# Switch to MC port once working
 nubis::discovery::service { $project_name:
-  tcp      => '443',
+  tags => [
+    '%%PURPOSE%%',
+    'kubelet',
+  ],
+  http => 'http://localhost:10255/healthz',
 }
 
