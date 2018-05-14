@@ -53,4 +53,4 @@ if [ "$NUBIS_PURPOSE" != "" ]; then
     find /etc/consul -type f -name '*.json' -print0 | xargs -0 --verbose sed -i -e "s/%%PURPOSE%%/$NUBIS_PURPOSE/g"
 fi
 
-systemcl reload consul.service
+systemcl restart consul.service
