@@ -114,12 +114,12 @@ resource "aws_security_group" "kubernetes" {
   #        same goes for everything else except for kubelet
   # master API server monitoring
   ingress {
-    from_port = 8080
-    to_port   = 8080
+    from_port = 443
+    to_port   = 443
     protocol  = "tcp"
 
     security_groups = [
-      "${module.info.monitoring_security_group}"
+      "${module.info.monitoring_security_group}",
     ]
   }
 
@@ -130,7 +130,7 @@ resource "aws_security_group" "kubernetes" {
     protocol  = "tcp"
 
     security_groups = [
-      "${module.info.monitoring_security_group}"
+      "${module.info.monitoring_security_group}",
     ]
   }
 
@@ -141,7 +141,7 @@ resource "aws_security_group" "kubernetes" {
     protocol  = "tcp"
 
     security_groups = [
-      "${module.info.monitoring_security_group}"
+      "${module.info.monitoring_security_group}",
     ]
   }
 
@@ -152,7 +152,7 @@ resource "aws_security_group" "kubernetes" {
     protocol  = "tcp"
 
     security_groups = [
-      "${module.info.monitoring_security_group}"
+      "${module.info.monitoring_security_group}",
     ]
   }
 
