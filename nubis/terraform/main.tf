@@ -110,6 +110,52 @@ resource "aws_security_group" "kubernetes" {
     ]
   }
 
+  # FIXME: We should figure out how to do this only for masters
+  #        same goes for everything else except for kubelet
+  # master API server monitoring
+  ingress {
+    from_port = 443
+    to_port   = 443
+    protocol  = "tcp"
+
+    security_groups = [
+      "${module.info.monitoring_security_group}",
+    ]
+  }
+
+  # kube-scheduler monitoring
+  ingress {
+    from_port = 10251
+    to_port   = 10251
+    protocol  = "tcp"
+
+    security_groups = [
+      "${module.info.monitoring_security_group}",
+    ]
+  }
+
+  # kube-controller-scheduler monitoring
+  ingress {
+    from_port = 10252
+    to_port   = 10252
+    protocol  = "tcp"
+
+    security_groups = [
+      "${module.info.monitoring_security_group}",
+    ]
+  }
+
+  # kubelet monitoring
+  ingress {
+    from_port = 10255
+    to_port   = 10255
+    protocol  = "tcp"
+
+    security_groups = [
+      "${module.info.monitoring_security_group}",
+    ]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
