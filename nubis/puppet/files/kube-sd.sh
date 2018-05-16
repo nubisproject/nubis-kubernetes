@@ -11,7 +11,7 @@ include nubis_discovery
 
 EOF
 
-if [ "${NUBIS_PURPOSE}" == "kubernetes-master" ]; then
+if [ "${NUBIS_PURPOSE}" == "master" ]; then
     cat << EOF >> /etc/nubis/puppet/kube-sd.pp
 nubis::discovery::service { 'kube-scheduler-metrics':
     tag  => [ 'metrics' ],

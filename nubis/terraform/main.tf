@@ -70,20 +70,20 @@ module "kops_cluster" {
   master-image                = "${var.ami}"
   master-additional-sgs       = "${local.security_groups}"
   master-additional-sgs-count = "${local.security_groups_count}"
-  master-additional-user-data = "${data.template_file.user_data_cloudconfig_master.rendered}"
+  master-additional-user-data = "${data.template_file.userdata_master.rendered}"
   master-update-interval      = 5
 
   # Bastion
   bastion-image                = "${var.ami}"
   bastion-additional-sgs       = "${local.security_groups}"
   bastion-additional-sgs-count = "${local.security_groups_count}"
-  bastion-additional-user-data = "${data.template_file.user_data_cloudconfig_bastion.rendered}"
+  bastion-additional-user-data = "${data.template_file.userdata_bastion.rendered}"
 
   # First minion instance group
   minion-image                = "${var.ami}"
   minion-additional-sgs       = "${local.security_groups}"
   minion-additional-sgs-count = "${local.security_groups_count}"
-  minion-additional-user-data = "${data.template_file.user_data_cloudconfig_node.rendered}"
+  minion-additional-user-data = "${data.template_file.userdata_minion.rendered}"
   minion-update-interval      = 4
   min-minions                 = 2
 }

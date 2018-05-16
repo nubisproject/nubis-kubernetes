@@ -3,7 +3,7 @@
 # We have to do this for master because weave overlay changes
 # the interfaces name and cause consul to have issues
 PURPOSE=$(nubis-metadata NUBIS_PURPOSE)
-if [ "${PURPOSE}" == "kubernetes-master" ]; then
+if [ "${PURPOSE}" == "master" ]; then
     IP_ADDR=$(curl --retry 60 -fks http://169.254.169.254/latest/dynamic/instance-identity/document | jq '.privateIp' -r)
 cat << EOF | tee /etc/consul/bind.json
 {
