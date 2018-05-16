@@ -83,7 +83,7 @@ module "kops_cluster" {
   minion-image                = "${var.ami}"
   minion-additional-sgs       = "${local.security_groups}"
   minion-additional-sgs-count = "${local.security_groups_count}"
-  minion-additional-user-data = "${data.template_file.userdata_minion.rendered}"
+  minion-additional-user-data = "${data.template_file.userdata_node.rendered}"
   minion-update-interval      = 4
   min-minions                 = 2
 }
