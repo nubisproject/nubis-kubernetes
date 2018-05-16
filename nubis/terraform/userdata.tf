@@ -1,95 +1,71 @@
-data "template_file" "nubis_metadata_master" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata.tpl")}"
-
-  vars {
-    NUBIS_PROJECT       = "${var.service_name}-master"
-    CONSUL_ACL_TOKEN    = "${var.consul_acl_token}"
-    NUBIS_PURPOSE       = "${var.purpose}-master"
-    NUBIS_ENVIRONMENT   = "${var.environment}"
-    NUBIS_ARENA         = "${var.arena}"
-    NUBIS_DOMAIN        = "${var.nubis_domain}"
-    NUBIS_ACCOUNT       = "${var.account}"
-    NUBIS_STACK         = "${var.service_name}-${var.environment}"
-    NUBIS_SUDO_GROUPS   = "${var.nubis_sudo_groups}"
-    NUBIS_USER_GROUPS   = "${var.nubis_user_groups}"
-    NUBIS_SWAP_SIZE_MEG = 0
-  }
+module "userdata_master" {
+  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=develop"
+  region            = "${var.region}"
+  nubis_domain      = "${var.nubis_domain}"
+  arena             = "${var.arena}"
+  environment       = "${var.environment}"
+  account           = "${var.account}"
+  service_name      = "${var.service_name}"
+  swap_size_meg     = "0"
+  nubis_user_groups = "${var.nubis_user_groups}"
+  nubis_sudo_groups = "${var.nubis_sudo_groups}"
+  consul_token      = "${var.consul_acl_token}"
+  purpose           = "master"
 }
 
-data "template_file" "user_data_cloudconfig_master" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata_cloudconfig.tpl")}"
+data "template_file" "userdata_master" {
+  template = "${file("${path.module}/templates/additionnal_userdata.tpl")}"
 
   vars {
     NAME    = "nubis-metadata"
-    PAYLOAD = "${base64encode(data.template_file.nubis_metadata_master.rendered)}"
-
-    # The nubis-metadata script looks here for it
-    LOCATION = "/var/cache/nubis/userdata"
+    PAYLOAD = "${indent(6, module.userdata_master.cloudinit)}"
   }
 }
 
-data "template_file" "nubis_metadata_node" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata.tpl")}"
-
-  vars {
-    NUBIS_PROJECT       = "${var.service_name}-node"
-    CONSUL_ACL_TOKEN    = "${var.consul_acl_token}"
-    NUBIS_PURPOSE       = "${var.purpose}-node"
-    NUBIS_ENVIRONMENT   = "${var.environment}"
-    NUBIS_ARENA         = "${var.arena}"
-    NUBIS_DOMAIN        = "${var.nubis_domain}"
-    NUBIS_ACCOUNT       = "${var.account}"
-    NUBIS_STACK         = "${var.service_name}-${var.environment}"
-    NUBIS_SUDO_GROUPS   = "${var.nubis_sudo_groups}"
-    NUBIS_USER_GROUPS   = "${var.nubis_user_groups}"
-    NUBIS_SWAP_SIZE_MEG = 0
-  }
+module "userdata_node" {
+  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=develop"
+  region            = "${var.region}"
+  nubis_domain      = "${var.nubis_domain}"
+  arena             = "${var.arena}"
+  environment       = "${var.environment}"
+  account           = "${var.account}"
+  service_name      = "${var.service_name}"
+  swap_size_meg     = "0"
+  nubis_user_groups = "${var.nubis_user_groups}"
+  nubis_sudo_groups = "${var.nubis_sudo_groups}"
+  consul_token      = "${var.consul_acl_token}"
+  purpose           = "node"
 }
 
-data "template_file" "user_data_cloudconfig_node" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata_cloudconfig.tpl")}"
+data "template_file" "userdata_node" {
+  template = "${file("${path.module}/templates/additionnal_userdata.tpl")}"
 
   vars {
     NAME    = "nubis-metadata"
-    PAYLOAD = "${base64encode(data.template_file.nubis_metadata_node.rendered)}"
-
-    # The nubis-metadata script looks here for it
-    LOCATION = "/var/cache/nubis/userdata"
+    PAYLOAD = "${indent(6, module.userdata_node.cloudinit)}"
   }
 }
 
-data "template_file" "nubis_metadata_bastion" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata.tpl")}"
-
-  vars {
-    NUBIS_PROJECT       = "${var.service_name}-bastion"
-    CONSUL_ACL_TOKEN    = "${var.consul_acl_token}"
-    NUBIS_PURPOSE       = "${var.purpose}-bastion"
-    NUBIS_ENVIRONMENT   = "${var.environment}"
-    NUBIS_ARENA         = "${var.arena}"
-    NUBIS_DOMAIN        = "${var.nubis_domain}"
-    NUBIS_ACCOUNT       = "${var.account}"
-    NUBIS_STACK         = "${var.service_name}-${var.environment}"
-    NUBIS_SUDO_GROUPS   = "${var.nubis_sudo_groups}"
-    NUBIS_USER_GROUPS   = "${var.nubis_user_groups}"
-    NUBIS_SWAP_SIZE_MEG = 0
-  }
+module "userdata_bastion" {
+  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=develop"
+  region            = "${var.region}"
+  nubis_domain      = "${var.nubis_domain}"
+  arena             = "${var.arena}"
+  environment       = "${var.environment}"
+  account           = "${var.account}"
+  service_name      = "${var.service_name}"
+  swap_size_meg     = "0"
+  nubis_user_groups = "${var.nubis_user_groups}"
+  nubis_sudo_groups = "${var.nubis_sudo_groups}"
+  consul_token      = "${var.consul_acl_token}"
+  purpose           = "bastion"
 }
 
-data "template_file" "user_data_cloudconfig_bastion" {
-  #count    = "${var.enabled}"
-  template = "${file("${path.module}/templates/userdata_cloudconfig.tpl")}"
+data "template_file" "userdata_bastion" {
+  template = "${file("${path.module}/templates/additionnal_userdata.tpl")}"
 
   vars {
     NAME    = "nubis-metadata"
-    PAYLOAD = "${base64encode(data.template_file.nubis_metadata_bastion.rendered)}"
-
-    # The nubis-metadata script looks here for it
-    LOCATION = "/var/cache/nubis/userdata"
+    PAYLOAD = "${indent(6, module.userdata_bastion.cloudinit)}"
   }
 }
