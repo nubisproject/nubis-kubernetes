@@ -14,19 +14,19 @@ EOF
 if [ "${NUBIS_PURPOSE}" == "master" ]; then
     cat << EOF >> /etc/nubis/puppet/kube-sd.pp
 nubis::discovery::service { 'kube-scheduler-metrics':
-    tag  => [ 'metrics' ],
+    tags => [ 'metrics' ],
     port => '10251',
     http => 'http://localhost:10251/metrics'
 }
 
 nubis::discovery::service { 'kube-controller-metrics':
-    tag  => [ 'metrics' ],
+    tags => [ 'metrics' ],
     port => '10252',
     http => 'http://localhost:10252/metrics',
 }
 
 nubis::discovery::service { 'kube-apiserver-metrics':
-    tag  => [ 'metrics' ],
+    tags => [ 'metrics' ],
     port => '8080',
     http => 'http://localhost:8080/metrics',
 }
