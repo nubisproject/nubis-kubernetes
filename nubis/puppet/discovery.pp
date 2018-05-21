@@ -6,6 +6,7 @@ nubis::discovery::service { split($project_name, '-')[1]:
     '%%PURPOSE%%',
     'kubelet',
   ],
+  port => '10255',
   http => 'http://localhost:10255/healthz',
 }
 
@@ -15,6 +16,7 @@ nubis::discovery::service { 'kubelet-metrics':
     '%%PURPOSE%%',
     'metrics',
   ],
+  port =>  '10255',
   http => 'http://localhost:10255/metrics',
 }
 
