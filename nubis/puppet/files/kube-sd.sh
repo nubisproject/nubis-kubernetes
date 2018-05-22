@@ -24,12 +24,7 @@ nubis::discovery::service { 'kube-controller-metrics':
     port => '10252',
     http => 'http://localhost:10252/metrics',
 }
-
-nubis::discovery::service { 'kube-apiserver-metrics':
-    tags => [ 'metrics' ],
-    port => '8080',
-    http => 'http://localhost:8080/metrics',
-}
+# TODO: kubeapi server needs to be here
 EOF
 fi
 
