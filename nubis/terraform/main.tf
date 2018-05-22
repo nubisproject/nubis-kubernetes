@@ -42,6 +42,11 @@ module "kops_cluster" {
 
   kubernetes-version = "v1.9.7"
 
+  addons = [
+    "manifest: monitoring-standalone",
+    "manifest: kubernetes-dashboard",
+  ]
+
   aws-region = "${var.region}"
 
   # Networking & connectivity
