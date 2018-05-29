@@ -62,6 +62,7 @@ module "kops_cluster" {
   kops-topology             = "private"
   trusted-cidrs             = ["0.0.0.0/0"]
   admin-ssh-public-key-path = "${var.ssh_key_file}"
+  rbac                      = "true"
 
   # DNS
   main-zone-id = "${module.info.hosted_zone_id}"
