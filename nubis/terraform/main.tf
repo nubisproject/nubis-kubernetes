@@ -14,12 +14,12 @@ module "info" {
 }
 
 data "aws_subnet" "private" {
-  count = "${length(split(",",module.info.private_subnets))}"
+  count = "${var.enabled * length(split(",",module.info.private_subnets))}"
   id    = "${element(split(",",module.info.private_subnets),count.index)}"
 }
 
 data "aws_subnet" "public" {
-  count = "${length(split(",",module.info.public_subnets))}"
+  count = "${var.enabled * length(split(",",module.info.public_subnets))}"
   id    = "${element(split(",",module.info.public_subnets),count.index)}"
 }
 
@@ -41,6 +41,7 @@ locals {
 }
 
 resource "local_file" "ssh_pubkey" {
+  count    = "${var.enabled}"
   content  = "${var.ssh_pubkey}"
   filename = "${local.ssh_pubkey_path}"
 }
@@ -49,6 +50,8 @@ module "kops_cluster" {
   #source  = "github.com/wanderaorg/karch/aws/cluster"
   #source  = "../aws/cluster"
   source = "github.com/tinnightcap/karch//aws/cluster?ref=nubis-compat"
+
+  enabled = "${var.enabled}"
 
   kubernetes-version = "v1.9.7"
 
@@ -76,7 +79,7 @@ module "kops_cluster" {
 
   # DNS
   main-zone-id = "${module.info.hosted_zone_id}"
-  cluster-name = "kubernetes.${module.info.hosted_zone_name}"
+  cluster-name = "kubernetes.${var.environment}.${module.info.hosted_zone_name}"
 
   # Kops & Kuberntetes
   kops-state-bucket = "${module.kops_bucket.name}"
@@ -84,6 +87,7 @@ module "kops_cluster" {
   # Master
   master-availability-zones   = "${split(",",module.info.availability_zones)}"
   master-image                = "${var.ami}"
+  master-machine-type         = "${var.kubernetes_master_type}"
   master-additional-sgs       = "${local.security_groups}"
   master-additional-sgs-count = "${local.security_groups_count}"
   master-additional-user-data = "${data.template_file.userdata_master.rendered}"
@@ -97,14 +101,17 @@ module "kops_cluster" {
 
   # First minion instance group
   minion-image                = "${var.ami}"
+  minion-machine-type         = "${var.kubernetes_node_type}"
   minion-additional-sgs       = "${local.security_groups}"
   minion-additional-sgs-count = "${local.security_groups_count}"
   minion-additional-user-data = "${data.template_file.userdata_node.rendered}"
   minion-update-interval      = 4
-  min-minions                 = 2
+  min-minions                 = "${var.kubernetes_node_minimum}"
 }
 
 resource "aws_security_group" "kubernetes" {
+  count = "${var.enabled}"
+
   name_prefix = "${var.service_name}-${var.arena}-${var.environment}-ssh-"
 
   vpc_id = "${module.info.vpc_id}"
