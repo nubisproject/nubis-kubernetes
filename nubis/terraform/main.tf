@@ -35,8 +35,9 @@ module "kops_bucket" {
 }
 
 locals {
-  security_groups       = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
-  security_groups_count = "${1+length(split(",",module.info.instance_security_groups))}"
+  kubernetes_sg         = "${list(element(concat(aws_security_group.kubernetes.*.id, list("")),0))}"
+  security_groups       = "${concat(split(",",module.info.instance_security_groups), local.kubernetes_sg)}"
+  security_groups_count = "${length(local.kube_sg) > 1 ? (1+length(split(",",module.info.instance_security_groups))) : (length(split(",",module.info.instance_security_groups)))}"
   ssh_pubkey_path       = "${path.module}/nubis.pub"
 }
 
