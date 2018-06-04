@@ -2,6 +2,10 @@ provider "aws" {
   region = "${var.region}"
 }
 
+provider "local" {
+  version = "~> 0.1"
+}
+
 module "info" {
   source      = "github.com/nubisproject/nubis-terraform//info?ref=v2.2.0"
   region      = "${var.region}"
@@ -33,6 +37,12 @@ module "kops_bucket" {
 locals {
   security_groups       = "${concat(split(",",module.info.instance_security_groups), list(aws_security_group.kubernetes.id))}"
   security_groups_count = "${1+length(split(",",module.info.instance_security_groups))}"
+  ssh_pubkey_path       = "${path.module}/nubis.pub"
+}
+
+resource "local_file" "ssh_pubkey" {
+  content  = "${var.ssh_pubkey}"
+  filename = "${local.ssh_pubkey_path}"
 }
 
 module "kops_cluster" {
@@ -61,7 +71,7 @@ module "kops_cluster" {
   nat-gateways              = [""]
   kops-topology             = "private"
   trusted-cidrs             = ["0.0.0.0/0"]
-  admin-ssh-public-key-path = "${var.ssh_key_file}"
+  admin-ssh-public-key-path = "${local.ssh_pubkey_path}"
   rbac                      = "true"
 
   # DNS
