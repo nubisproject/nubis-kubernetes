@@ -11,8 +11,20 @@ cat << EOF | tee /etc/consul/bind.json
 }
 EOF
 
-cat << EOF | tee /etc/resolvconf/resolv.conf.d
+DISTRO=$(lsb_release -s -i)
+if [ "${DISTRO}" == "Ubuntu" ]; then
+  cat << EOF | tee /etc/resolvconf/resolv.conf.d/tail
 # Added to help kube-dns find a good forwarder
 nameserver ${IP_ADDR}
 EOF
+  fi
+elif [ "${DISTRO}" == "Centos" ]; then
+  cat << EOF | tee -a /etc/dhcp/dhclient.conf
+# Added to help kube-dns find a good forwarder
+prepend domain-name-servers ${IP_ADDR};
+EOF
 fi
+
+# Kick networking into shape
+systemctl restart network
+systemctl restart dnsmasq
