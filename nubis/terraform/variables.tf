@@ -1,4 +1,6 @@
-variable "enabled" {}
+variable "enabled" {
+  default = "1"
+}
 
 variable "account" {}
 
