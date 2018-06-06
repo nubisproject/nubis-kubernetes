@@ -38,7 +38,7 @@ spec:
         # let's make sure we all agree on what the above times mean
         - --timezone=UTC
         # terminate pods for real: this disables dry-run mode which is on by default
-        - --no-dry-run
+        # - --no-dry-run
 
 ---
 
