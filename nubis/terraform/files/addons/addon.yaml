@@ -1,0 +1,11 @@
+kind: Addons
+metadata:
+  name: nubis
+spec:
+  addons:
+  - version: 1.0.0
+    id: nubis.00
+    name: kubernetes-dashboard-sso.nubis.addons.k8s.io
+    selector:
+      k8s-addon: kubernetes-dashboard-sso.nubis.addons.k8s.io
+    manifest: dashboard-sso/manifest.yaml
