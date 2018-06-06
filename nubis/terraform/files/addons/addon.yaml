@@ -9,3 +9,9 @@ spec:
     selector:
       k8s-addon: kubernetes-dashboard-sso.nubis.addons.k8s.io
     manifest: dashboard-sso/manifest.yaml
+  - version: 0.10.0
+    id: nubis.00
+    name: kube2iam.nubis.addons.k8s.io
+    selector:
+      k8s-addon: kube2iam.nubis.addons.k8s.io
+    manifest: kube2iam/manifest.yaml
