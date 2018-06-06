@@ -1,15 +1,17 @@
 #!/bin/bash
 
+IP_ADDR=$(curl --retry 60 -fks http://169.254.169.254/latest/dynamic/instance-identity/document | jq '.privateIp' -r)
+
 # We have to do this for master because weave overlay changes
 # the interfaces name and cause consul to have issues
 PURPOSE=$(nubis-metadata NUBIS_PURPOSE)
 if [ "${PURPOSE}" == "master" ]; then
-    IP_ADDR=$(curl --retry 60 -fks http://169.254.169.254/latest/dynamic/instance-identity/document | jq '.privateIp' -r)
 cat << EOF | tee /etc/consul/bind.json
 {
   "bind_addr": "${IP_ADDR}"
 }
 EOF
+fi
 
 DISTRO=$(lsb_release -s -i)
 if [ "${DISTRO}" == "Ubuntu" ]; then
@@ -17,14 +19,14 @@ if [ "${DISTRO}" == "Ubuntu" ]; then
 # Added to help kube-dns find a good forwarder
 nameserver ${IP_ADDR}
 EOF
-  fi
+systemctl restart networking
 elif [ "${DISTRO}" == "Centos" ]; then
   cat << EOF | tee -a /etc/dhcp/dhclient.conf
 # Added to help kube-dns find a good forwarder
 prepend domain-name-servers ${IP_ADDR};
 EOF
+systemctl restart network
 fi
 
-# Kick networking into shape
-systemctl restart network
+# Kick dnsmasq into shape
 systemctl restart dnsmasq
