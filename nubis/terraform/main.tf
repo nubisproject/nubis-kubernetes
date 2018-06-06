@@ -55,6 +55,9 @@ module "kops_cluster" {
   addons = [
     "manifest: monitoring-standalone",
     "manifest: kubernetes-dashboard",
+
+    # This value need to *not* be computed, TF issue otherwise
+    "manifest: s3://${module.kops_bucket.name}/kubernetes.${module.info.hosted_zone_name}/addons/nubis/${local.addons_etag}/addon.yaml",
   ]
 
   aws-region = "${var.region}"
@@ -136,6 +139,17 @@ resource "aws_security_group" "kubernetes" {
 
     security_groups = [
       "${module.info.monitoring_security_group}",
+    ]
+  }
+
+  # We are exposing the Kubernetes Dashboard on all nodes via this port
+  ingress {
+    from_port = 31443
+    to_port   = 31443
+    protocol  = "tcp"
+
+    security_groups = [
+      "${module.info.sso_security_group}",
     ]
   }
 
