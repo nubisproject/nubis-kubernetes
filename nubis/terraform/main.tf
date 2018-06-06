@@ -37,8 +37,9 @@ module "kops_bucket" {
 locals {
   kubernetes_sg         = "${list(element(concat(aws_security_group.kubernetes.*.id, list("")),0))}"
   security_groups       = "${concat(split(",",module.info.instance_security_groups), local.kubernetes_sg)}"
-  security_groups_count = "${length(local.kubernetes_sg) > 1 ? (1+length(split(",",module.info.instance_security_groups))) : (length(split(",",module.info.instance_security_groups)))}"
+  security_groups_count = "${var.enabled * ( 1 + length(split(",",module.info.instance_security_groups)))}"
   ssh_pubkey_path       = "${path.module}/nubis.pub"
+  cluster_name          = "k8s.${var.environment}.${module.info.hosted_zone_name}"
 }
 
 resource "local_file" "ssh_pubkey" {
@@ -59,10 +60,10 @@ module "kops_cluster" {
   addons = [
     "manifest: monitoring-standalone",
     "manifest: kubernetes-dashboard",
-
-    # This value need to *not* be computed, TF issue otherwise
-    "manifest: s3://${module.kops_bucket.name}/kubernetes.${module.info.hosted_zone_name}/addons/nubis/${local.addons_etag}/addon.yaml",
+    "manifest: s3://${module.kops_bucket.name}/${local.cluster_name}/addons/nubis/${local.addons_etag}/addon.yaml",
   ]
+
+  addons_count = "3"
 
   aws-region = "${var.region}"
 
@@ -83,7 +84,7 @@ module "kops_cluster" {
 
   # DNS
   main-zone-id = "${module.info.hosted_zone_id}"
-  cluster-name = "kubernetes.${var.environment}.${module.info.hosted_zone_name}"
+  cluster-name = "${local.cluster_name}"
 
   # Kops & Kuberntetes
   kops-state-bucket = "${module.kops_bucket.name}"

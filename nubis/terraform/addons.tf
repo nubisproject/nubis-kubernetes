@@ -8,7 +8,7 @@ locals {
 
 resource "aws_s3_bucket_object" "nubis_addon" {
   bucket       = "${module.kops_bucket.name}"
-  key          = "kubernetes.${module.info.hosted_zone_name}/addons/nubis/${local.addons_etag}/addon.yaml"
+  key          = "${local.cluster_name}/addons/nubis/${local.addons_etag}/addon.yaml"
   source       = "${path.module}/files/addons/addon.yaml"
   etag         = "${md5(file("${path.module}/files/addons/addon.yaml"))}"
   content_type = "text/yaml"
@@ -16,7 +16,7 @@ resource "aws_s3_bucket_object" "nubis_addon" {
 
 resource "aws_s3_bucket_object" "dashboard_manifest" {
   bucket       = "${module.kops_bucket.name}"
-  key          = "kubernetes.${module.info.hosted_zone_name}/addons/nubis/${local.addons_etag}/dashboard-sso/manifest.yaml"
+  key          = "${local.cluster_name}/addons/nubis/${local.addons_etag}/dashboard-sso/manifest.yaml"
   source       = "${path.module}/files/addons/dashboard-sso/manifest.yaml"
   etag         = "${local.dashboard_etag}"
   content_type = "text/yaml"
@@ -43,7 +43,7 @@ data "template_file" "kube2iam_manifest" {
 
 resource "aws_s3_bucket_object" "kube2iam_manifest" {
   bucket       = "${module.kops_bucket.name}"
-  key          = "kubernetes.${module.info.hosted_zone_name}/addons/nubis/${local.addons_etag}/kube2iam/manifest.yaml"
+  key          = "${local.cluster_name}/addons/nubis/${local.addons_etag}/kube2iam/manifest.yaml"
   content      = "${data.template_file.kube2iam_manifest.rendered}"
   etag         = "${local.kube2iam_etag}"
   content_type = "text/yaml"
