@@ -3,7 +3,7 @@ metadata:
   name: nubis
 spec:
   addons:
-  - version: 1.0.0
+  - version: 1.0.1
     id: nubis.00
     name: kubernetes-dashboard-sso.nubis.addons.k8s.io
     selector:
