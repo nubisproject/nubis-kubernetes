@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,3 +15,76 @@ spec:
   selector:
     k8s-app: kubernetes-dashboard
   type: NodePort
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dashboard-readonly-user
+  namespace: kube-system
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dashboard-readonly-user
+rules:
+- apiGroups: [
+    "",
+    "apps",
+    "autoscaling",
+    "batch",
+    "extensions",
+    "policy",
+    "rbac.authorization.k8s.io",
+    "storage.k8s.io",
+  ]
+  resources: [
+    "componentstatuses",
+    "configmaps",
+    "daemonsets",
+    "deployments",
+    "events",
+    "endpoints",
+    "horizontalpodautoscalers",
+    "ingresses",
+    "jobs",
+    "cronjobs",
+    "statefulsets",
+    "limitranges",
+    "namespaces",
+    "nodes",
+    "pods",
+    "roles",
+    "clusterroles",
+    "storageclasses",
+    "persistentvolumes",
+    "persistentvolumeclaims",
+    "resourcequotas",
+    "replicasets",
+    "replicationcontrollers",
+    "serviceaccounts",
+    "services",
+  ]
+  verbs: ["get", "watch", "list"]
+- nonResourceURLs: [
+    "*",
+  ]
+  verbs: ["get", "watch", "list"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: dashboard-readonly-user
+subjects:
+- kind: ServiceAccount
+  name: dashboard-readonly-user
+  namespace: kube-system
