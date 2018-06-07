@@ -36,7 +36,7 @@ resource "aws_s3_bucket_object" "chaoskube_manifest" {
 data "aws_caller_identity" "current" {}
 
 data "template_file" "kube2iam_manifest" {
-  count        = "${var.enabled}"
+  count    = "${var.enabled}"
   template = "${file("${path.module}/files/addons/kube2iam/manifest.yaml.tmpl")}"
 
   vars = {
