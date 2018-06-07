@@ -24,7 +24,7 @@ resource "aws_s3_bucket_object" "dashboard_manifest" {
 
 resource "aws_s3_bucket_object" "chaoskube_manifest" {
   bucket       = "${module.kops_bucket.name}"
-  key          = "kubernetes.${module.info.hosted_zone_name}/addons/nubis/${local.addons_etag}/chaoskube/manifest.yaml"
+  key          = "${local.cluster_name}/addons/nubis/${local.addons_etag}/chaoskube/manifest.yaml"
   source       = "${path.module}/files/addons/chaoskube/manifest.yaml"
   etag         = "${local.chaoskube_etag}"
   content_type = "text/yaml"
