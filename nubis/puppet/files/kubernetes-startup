@@ -20,7 +20,7 @@ if [ "${DISTRO}" == "Ubuntu" ]; then
 nameserver ${IP_ADDR}
 EOF
 systemctl restart networking
-elif [ "${DISTRO}" == "Centos" ]; then
+elif [ "${DISTRO}" == "CentOS" ]; then
   cat << EOF | tee -a /etc/dhcp/dhclient.conf
 # Added to help kube-dns find a good forwarder
 prepend domain-name-servers ${IP_ADDR};
