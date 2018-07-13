@@ -112,6 +112,7 @@ module "kops_cluster" {
   minion-additional-user-data = "${data.template_file.userdata_node.rendered}"
   minion-update-interval      = 4
   min-minions                 = "${var.kubernetes_node_minimum}"
+  max-minions                 = "${2 * var.kubernetes_node_minimum}"
 }
 
 resource "aws_security_group" "kubernetes" {
