@@ -1,0 +1,6 @@
+account = ""
+region = "us-west-2"
+arena = "core"
+environment = "stage"
+service_name = ""
+ami = ""

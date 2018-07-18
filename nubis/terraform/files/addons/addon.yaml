@@ -1,0 +1,23 @@
+kind: Addons
+metadata:
+  name: nubis
+spec:
+  addons:
+  - version: 1.0.1
+    id: nubis.00
+    name: kubernetes-dashboard-sso.nubis.addons.k8s.io
+    selector:
+      k8s-addon: kubernetes-dashboard-sso.nubis.addons.k8s.io
+    manifest: dashboard-sso/manifest.yaml
+  - version: 0.10.0
+    id: nubis.00
+    name: kube2iam.nubis.addons.k8s.io
+    selector:
+      k8s-addon: kube2iam.nubis.addons.k8s.io
+    manifest: kube2iam/manifest.yaml
+  - version: 0.9.0
+    id: nubis.00
+    name: chaoskube.nubis.addons.k8s.io
+    selector:
+      k8s-addon: chaoskube.nubis.addons.k8s.io
+    manifest: chaoskube/manifest.yaml
