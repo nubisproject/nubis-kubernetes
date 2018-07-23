@@ -1,6 +1,16 @@
 # Change Log
 
-## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-20)
+## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-23)
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
+
+**Closed issues:**
+
+- Tag v2.3.0 release [\#74](https://github.com/nubisproject/nubis-kubernetes/issues/74)
+
+**Merged pull requests:**
+
+- Pass enabled flag for info and bucket modules [\#78](https://github.com/nubisproject/nubis-kubernetes/pull/78) ([tinnightcap](https://github.com/tinnightcap))
+
 [Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
 
 **Closed issues:**
