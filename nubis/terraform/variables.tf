@@ -1,7 +1,3 @@
-variable "enabled" {
-  default = "1"
-}
-
 variable "account" {}
 
 variable "region" {}
