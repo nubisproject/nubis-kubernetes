@@ -8,6 +8,7 @@ provider "local" {
 
 module "info" {
   source      = "github.com/nubisproject/nubis-terraform//info?ref=v2.2.0"
+  enabled     = "${var.enabled}"
   region      = "${var.region}"
   environment = "${var.environment}"
   account     = "${var.account}"
@@ -25,6 +26,7 @@ data "aws_subnet" "public" {
 
 module "kops_bucket" {
   source       = "github.com/nubisproject/nubis-terraform//bucket?ref=v2.2.0"
+  enabled      = "${var.enabled}"
   region       = "${var.region}"
   environment  = "${var.environment}"
   account      = "${var.account}"
