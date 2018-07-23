@@ -53,8 +53,6 @@ module "kops_cluster" {
   #source  = "../aws/cluster"
   source = "github.com/tinnightcap/karch//aws/cluster?ref=nubis-compat"
 
-  enabled = "${var.enabled}"
-
   kubernetes-version = "v1.9.7"
 
   addons = [
@@ -116,7 +114,6 @@ module "kops_cluster" {
 }
 
 resource "aws_security_group" "kubernetes" {
-  count = "${var.enabled}"
 
   name_prefix = "${var.service_name}-${var.arena}-${var.environment}-ssh-"
 
