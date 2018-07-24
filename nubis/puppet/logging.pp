@@ -1,4 +1,6 @@
-include ::fluentd
+class { 'fluentd':
+  service_ensure => stopped
+}
 
 # Ugh
 if $::osfamily == 'redhat' {
