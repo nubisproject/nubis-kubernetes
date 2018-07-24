@@ -5,6 +5,12 @@
 
 **Closed issues:**
 
+- Tag v2.3.0 release [\#84](https://github.com/nubisproject/nubis-kubernetes/issues/84)
+
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
+
+**Closed issues:**
+
 - Build fails trying to start td-agent [\#82](https://github.com/nubisproject/nubis-kubernetes/issues/82)
 - Tag v2.3.0 release [\#79](https://github.com/nubisproject/nubis-kubernetes/issues/79)
 
