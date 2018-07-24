@@ -1,6 +1,17 @@
 # Change Log
 
-## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-23)
+## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-24)
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
+
+**Closed issues:**
+
+- Build fails trying to start td-agent [\#82](https://github.com/nubisproject/nubis-kubernetes/issues/82)
+- Tag v2.3.0 release [\#79](https://github.com/nubisproject/nubis-kubernetes/issues/79)
+
+**Merged pull requests:**
+
+- Inhibit td-agent startup during builds [\#83](https://github.com/nubisproject/nubis-kubernetes/pull/83) ([tinnightcap](https://github.com/tinnightcap))
+
 [Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
 
 **Closed issues:**

@@ -30,3 +30,7 @@ fi
 
 # Kick dnsmasq into shape
 systemctl restart dnsmasq
+
+# Make sure we start td-agent (it was disabled during the build)
+# We add a custom plugin during the build
+/etc/init.d/td-agent restart
