@@ -1,6 +1,17 @@
 # Change Log
 
-## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-24)
+## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-27)
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
+
+**Closed issues:**
+
+- Fix nubis-metadata call [\#90](https://github.com/nubisproject/nubis-kubernetes/issues/90)
+- Tag v2.3.0 release [\#87](https://github.com/nubisproject/nubis-kubernetes/issues/87)
+
+**Merged pull requests:**
+
+- Fixing kube-sd.sh to call nubis-metadata properly [\#91](https://github.com/nubisproject/nubis-kubernetes/pull/91) ([limed](https://github.com/limed))
+
 [Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
 
 **Closed issues:**
