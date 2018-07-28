@@ -27,8 +27,6 @@ spec:
         # - --labels=environment=test
         # only consider pods with this annotation
         # - --annotations=chaos.alpha.kubernetes.io/enabled=true
-        # don't consider pods with this annotation
-        - --annotations=!chaos.alpha.kubernetes.io/disabled=true
         # exclude all pods in the kube-system namespace
         # - --namespaces=!kube-system
         # don't kill anything on weekends
