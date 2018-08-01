@@ -1,6 +1,16 @@
 # Change Log
 
-## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-07-27)
+## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-08-01)
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
+
+**Closed issues:**
+
+- Tag v2.3.0 release [\#92](https://github.com/nubisproject/nubis-kubernetes/issues/92)
+
+**Merged pull requests:**
+
+- Revert "\[cahoskube\] Skip pods with a certain exlude annotation" [\#97](https://github.com/nubisproject/nubis-kubernetes/pull/97) ([limed](https://github.com/limed))
+
 [Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
 
 **Closed issues:**
