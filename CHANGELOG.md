@@ -1,6 +1,12 @@
 # Change Log
 
-## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-08-01)
+## [v2.3.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.0) (2018-08-07)
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
+
+**Closed issues:**
+
+- Tag v2.3.0 release [\#98](https://github.com/nubisproject/nubis-kubernetes/issues/98)
+
 [Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.0)
 
 **Closed issues:**
