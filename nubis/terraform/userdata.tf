@@ -1,5 +1,5 @@
 module "userdata_master" {
-  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=v2.3.0"
+  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=v2.3.1"
   region            = "${var.region}"
   nubis_domain      = "${var.nubis_domain}"
   arena             = "${var.arena}"
@@ -23,7 +23,7 @@ data "template_file" "userdata_master" {
 }
 
 module "userdata_node" {
-  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=v2.3.0"
+  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=v2.3.1"
   region            = "${var.region}"
   nubis_domain      = "${var.nubis_domain}"
   arena             = "${var.arena}"
@@ -47,7 +47,7 @@ data "template_file" "userdata_node" {
 }
 
 module "userdata_bastion" {
-  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=v2.3.0"
+  source            = "github.com/nubisproject/nubis-terraform//worker/userdata?ref=v2.3.1"
   region            = "${var.region}"
   nubis_domain      = "${var.nubis_domain}"
   arena             = "${var.arena}"
