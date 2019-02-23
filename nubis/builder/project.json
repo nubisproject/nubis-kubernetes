@@ -7,7 +7,7 @@
     "deregister": "true",
     "project_description": "Kubernetes image for runing in Nubis",
     "project_name": "nubis-kubernetes",
-    "project_version": "v2.3.1",
-    "source_ami_project_version": "v2.3.1"
+    "project_version": "v2.4.0",
+    "source_ami_project_version": "v2.4.0"
   }
 }
