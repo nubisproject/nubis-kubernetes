@@ -1,5 +1,21 @@
 # Change Log
 
+## [v2.4.0](https://github.com/nubisproject/nubis-kubernetes/tree/v2.4.0) (2019-02-23)
+[Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.4.0)
+
+**Closed issues:**
+
+- Tag v2.3.1 release [\#109](https://github.com/nubisproject/nubis-kubernetes/issues/109)
+- Tag v2.3.1 release [\#106](https://github.com/nubisproject/nubis-kubernetes/issues/106)
+- Tag v2.3.0 release [\#102](https://github.com/nubisproject/nubis-kubernetes/issues/102)
+
+**Merged pull requests:**
+
+- Update CHANGELOG for v2.3.1 release \[skip ci\] [\#111](https://github.com/nubisproject/nubis-kubernetes/pull/111) ([nubis-automation](https://github.com/nubis-automation))
+- Update CHANGELOG for v2.3.1 release \[skip ci\] [\#110](https://github.com/nubisproject/nubis-kubernetes/pull/110) ([nubis-automation](https://github.com/nubis-automation))
+- Update CHANGELOG for v2.3.1 release \[skip ci\] [\#108](https://github.com/nubisproject/nubis-kubernetes/pull/108) ([nubis-automation](https://github.com/nubis-automation))
+- Update CHANGELOG for v2.3.1 release \[skip ci\] [\#107](https://github.com/nubisproject/nubis-kubernetes/pull/107) ([nubis-automation](https://github.com/nubis-automation))
+
 ## [v2.3.1](https://github.com/nubisproject/nubis-kubernetes/tree/v2.3.1) (2018-08-21)
 [Full Changelog](https://github.com/nubisproject/nubis-kubernetes/compare/v2.3.0...v2.3.1)
 
